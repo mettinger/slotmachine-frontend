@@ -23,9 +23,41 @@ class PlayComponent extends Component {
 
 }
 
+// FUND THE HOUSE
+onSubmitFund = async event => {
+  event.preventDefault();
+  const accounts = await web3.eth.getAccounts();
+
+  this.setState({ message: 'Waiting on transaction success...' });
+
+  await SlotMachine.methods.fund().send({
+    from: accounts[0],
+    value: web3.utils.toWei(this.state.valueFund, 'ether')
+  });
+
+  this.setState({ message: 'You have funded!', balance:  await SlotMachine.methods.getBalance().call()/1e18});
+};
+
+// MAKE A BET
+onSubmitBet = async event => {
+  event.preventDefault();
+  const accounts = await web3.eth.getAccounts();
+
+  this.setState({ message: 'Waiting on transaction success...' });
+
+  await SlotMachine.methods.wager().send({
+    from: accounts[0],
+    value: web3.utils.toWei(this.state.valueBet, 'ether')
+  });
+
+  this.setState({ message: `You have bet!  Your bet ID: ${await SlotMachine.methods.counter().call() - 1}`,
+                  balance:  await SlotMachine.methods.getBalance().call()/1e18,
+                  counter:  await SlotMachine.methods.counter().call()});
+};
+
   // PLAY THE GAME
   onSubmitPlay = async event => {
-/*
+
     event.preventDefault();
     const accounts = await web3.eth.getAccounts();
     this.setState({ message: 'Waiting on transaction success...' });
@@ -34,11 +66,11 @@ class PlayComponent extends Component {
     });
     const outcome = await SlotMachine.methods.outcomeGet(this.state.playID).call();
     this.setState({ outcome });
-    this.setState({ message: `Play outcome: ${this.state.outcome}`,
+    this.setState({ message: `Your payout: ${await SlotMachine.methods.award().call()}`,
                     balance:  await SlotMachine.methods.getBalance().call()/1e18,
-                    counter:  await SlotMachine.methods.counter().call()});*/
+                    counter:  await SlotMachine.methods.counter().call()});
 
-    this.props.spinFunction([3,3,3,3,3]);
+    this.props.spinFunction(outcome);
 
   };
 
@@ -46,13 +78,46 @@ class PlayComponent extends Component {
     return (
       <div>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css"></link>
-        <form onSubmit={this.onSubmitPlay}>
+
+        {/* FUND!! */}
+
+        <form>
+          <h4>Fund the contract.</h4>
+          <div>
+            <label>Amount of ether to fund: </label>
+            <input
+              value={this.state.valueFund}
+              onChange={event => this.setState({ valueFund: event.target.value })}
+            />
+          </div>
+          <Button primary onClick={this.onSubmitFund}>Fund!</Button>
+        </form>
+
+        {/* BET!! */}
+
+        <hr />
+        <form>
+          <h4>Make a bet!</h4>
+          <div>
+            <label>Amount of ether to bet: </label>
+            <input
+              value={this.state.valueBet}
+              onChange={event => this.setState({ valueBet: event.target.value })}
+            />
+          </div>
+          <Button primary onClick={this.onSubmitBet}>Bet!</Button>
+        </form>
+
+        {/* SPIN!! */}
+
+        <hr />
+        <form>
           <h4>Play the game!</h4>
           <div>
             <label>Bet id: </label>
             <input type="text"
               value={this.state.playID}
-              onChange={event => this.setState({ playID: event.target.value, message: event.target.value })}
+              onChange={event => this.setState({ playID: event.target.value})}
             />
           </div>
         </form>
