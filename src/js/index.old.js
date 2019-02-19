@@ -1,12 +1,8 @@
 
-//import logo from './logo.svg';
-//import './App.css';
-
 import React, { Component } from 'react';
 import web3 from '../ethereum/web3';
 import SlotMachine from '../ethereum/slotMachine';
 import { Button } from 'semantic-ui-react';
-//import MyForm from '../components/MyForm.js'
 
 class App extends Component {
 

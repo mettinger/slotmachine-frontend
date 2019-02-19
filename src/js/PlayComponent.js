@@ -12,8 +12,6 @@ class PlayComponent extends Component {
     this.state = {
       owner: '',
       message: '',
-      balance: '',
-      minBetDivisor: '',
       valueFund: '',
       valueBet: '',
       counter: '',
@@ -26,51 +24,55 @@ class PlayComponent extends Component {
 // FUND THE HOUSE
 onSubmitFund = async event => {
   event.preventDefault();
-  const accounts = await web3.eth.getAccounts();
+  //const accounts = await web3.eth.getAccounts();
 
   this.setState({ message: 'Waiting on transaction success...' });
 
   await SlotMachine.methods.fund().send({
-    from: accounts[0],
+    from: this.props.account, //accounts[0],
     value: web3.utils.toWei(this.state.valueFund, 'ether')
   });
 
-  this.setState({ message: 'You have funded!', balance:  await SlotMachine.methods.getBalance().call()/1e18});
+  this.props.onBalanceChange();
+  this.props.onHousePercentageChange();
+  this.setState({ message: 'You have funded!'});
 };
 
 // MAKE A BET
 onSubmitBet = async event => {
   event.preventDefault();
-  const accounts = await web3.eth.getAccounts();
+  //const accounts = await web3.eth.getAccounts();
 
   this.setState({ message: 'Waiting on transaction success...' });
 
   await SlotMachine.methods.wager().send({
-    from: accounts[0],
+    from: this.props.account, //accounts[0],
     value: web3.utils.toWei(this.state.valueBet, 'ether')
   });
 
-  this.setState({ message: `You have bet!  Your bet ID: ${await SlotMachine.methods.counter().call() - 1}`,
-                  balance:  await SlotMachine.methods.getBalance().call()/1e18,
-                  counter:  await SlotMachine.methods.counter().call()});
+  this.props.onBalanceChange();
+  const thisCounter = await SlotMachine.methods.counter().call();
+  this.setState({ message: `You have bet!  Your bet ID: ${thisCounter - 1}`,
+                  counter:  thisCounter});
+
 };
 
   // PLAY THE GAME
   onSubmitPlay = async event => {
 
     event.preventDefault();
-    const accounts = await web3.eth.getAccounts();
+    //const accounts = await web3.eth.getAccounts();
     this.setState({ message: 'Waiting on transaction success...' });
     await SlotMachine.methods.play(this.state.playID).send({
-      from: accounts[0]
+      from: this.props.account //accounts[0]
     });
     const outcome = await SlotMachine.methods.outcomeGet(this.state.playID).call();
     this.setState({ outcome });
-    this.setState({ message: `Your payout: ${await SlotMachine.methods.award().call()}`,
-                    balance:  await SlotMachine.methods.getBalance().call()/1e18,
-                    counter:  await SlotMachine.methods.counter().call()});
 
+    this.setState({ message: 'Spinning!' });
     this.props.spinFunction(outcome);
+    setTimeout( async () => {this.setState({ message: `Your payout: ${await SlotMachine.methods.award().call()}`});},5500);
+    this.props.onBalanceChange();
 
   };
 
