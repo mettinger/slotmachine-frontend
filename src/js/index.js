@@ -9,14 +9,11 @@ const config = {
 
 const slot = new Slot(document.getElementById('slot'), config);
 
-
 ReactDOM.render(
     <InfoAndActionComponent spinFunction={slot.spin}/>,
     document.getElementById('InfoAndActionComponent')
 );
 
-// least ownership Amount
 // my open bet IDs
-// my house percentage
-// my house balance
-// withdraw house balance
+// player withdraw rather than auto payment?
+// rounding issues

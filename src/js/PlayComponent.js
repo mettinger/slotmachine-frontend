@@ -24,33 +24,30 @@ class PlayComponent extends Component {
 // FUND THE HOUSE
 onSubmitFund = async event => {
   event.preventDefault();
-  //const accounts = await web3.eth.getAccounts();
-
   this.setState({ message: 'Waiting on transaction success...' });
 
   await SlotMachine.methods.fund().send({
-    from: this.props.account, //accounts[0],
+    from: this.props.account,
     value: web3.utils.toWei(this.state.valueFund, 'ether')
   });
 
   this.props.onBalanceChange();
-  this.props.onHousePercentageChange();
+  this.props.onHouseAccountChange();
   this.setState({ message: 'You have funded!'});
 };
 
 // MAKE A BET
 onSubmitBet = async event => {
   event.preventDefault();
-  //const accounts = await web3.eth.getAccounts();
-
   this.setState({ message: 'Waiting on transaction success...' });
 
   await SlotMachine.methods.wager().send({
-    from: this.props.account, //accounts[0],
+    from: this.props.account,
     value: web3.utils.toWei(this.state.valueBet, 'ether')
   });
 
   this.props.onBalanceChange();
+  this.props.onHouseAccountChange();
   const thisCounter = await SlotMachine.methods.counter().call();
   this.setState({ message: `You have bet!  Your bet ID: ${thisCounter - 1}`,
                   counter:  thisCounter});
@@ -61,10 +58,9 @@ onSubmitBet = async event => {
   onSubmitPlay = async event => {
 
     event.preventDefault();
-    //const accounts = await web3.eth.getAccounts();
     this.setState({ message: 'Waiting on transaction success...' });
     await SlotMachine.methods.play(this.state.playID).send({
-      from: this.props.account //accounts[0]
+      from: this.props.account
     });
     const outcome = await SlotMachine.methods.outcomeGet(this.state.playID).call();
     this.setState({ outcome });
@@ -73,8 +69,22 @@ onSubmitBet = async event => {
     this.props.spinFunction(outcome);
     setTimeout( async () => {this.setState({ message: `Your payout: ${await SlotMachine.methods.award().call()}`});},5500);
     this.props.onBalanceChange();
+    this.props.onHouseAccountChange();
 
   };
+
+  // CASH OUT HOUSE OWNERSHIP
+  onSubmitCashOut = async event => {
+    event.preventDefault();
+    this.setState({ message: 'Waiting on transaction success...' });
+    await await SlotMachine.methods.houseWithdraw(this.props.account).send({
+      from: this.props.account
+    });
+
+    this.props.onBalanceChange();
+    this.props.onHouseAccountChange();
+    this.setState({ message: "Withdrawl successful!" });
+  }
 
   render() {
     return (
@@ -82,7 +92,6 @@ onSubmitBet = async event => {
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css"></link>
 
         {/* FUND!! */}
-
         <form>
           <h4>Fund the contract.</h4>
           <div>
@@ -96,7 +105,6 @@ onSubmitBet = async event => {
         </form>
 
         {/* BET!! */}
-
         <hr />
         <form>
           <h4>Make a bet!</h4>
@@ -111,7 +119,6 @@ onSubmitBet = async event => {
         </form>
 
         {/* SPIN!! */}
-
         <hr />
         <form>
           <h4>Play the game!</h4>
@@ -124,6 +131,14 @@ onSubmitBet = async event => {
           </div>
         </form>
         <Button primary onClick={this.onSubmitPlay}>Spin!</Button>
+
+
+        {/* CASH OUT HOUSE OWNERSHIP */}
+        <hr />
+        <h4>Cash out house ownership.</h4>
+        <Button primary onClick={this.onSubmitCashOut}>Cash Out!</Button>
+
+        {/* MESSAGES! */}
         <hr />
         <h1>{this.state.message}</h1>
       </div>

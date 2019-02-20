@@ -8,10 +8,11 @@ class InfoAndActionComponent extends Component {
   constructor(props) {
     super(props);
     this.balanceChange = this.balanceChange.bind(this);
-    this.housePercentageChange = this.housePercentageChange.bind(this);
+    this.houseAccountChange= this.houseAccountChange.bind(this);
     this.state = {balance: '',
-                  housePercentage: '',
-                  account: ''};
+                  houseAccountBalance: '',
+                  account: '',
+                  minInvestment: ''};
   }
 
   async componentDidMount() {
@@ -20,29 +21,32 @@ class InfoAndActionComponent extends Component {
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] });
 
-    const housePercentage = await SlotMachine.methods.housePercentages(this.state.account).call();
-    this.setState({ housePercentage: housePercentage.numerator/housePercentage.denominator});
+    const houseAccountBalance = await SlotMachine.methods.houseAccountGet(this.state.account).call();
+    this.setState({ houseAccountBalance: houseAccountBalance});
+
+    this.setState({minInvestment: await SlotMachine.methods.minInvestment().call()})
   }
 
   async balanceChange() {
     this.setState({ balance: await SlotMachine.methods.getBalance().call() });
   }
 
-  async housePercentageChange() {
-    const housePercentage = await SlotMachine.methods.housePercentages(this.state.account).call();
-    this.setState({ housePercentage: housePercentage.numerator/housePercentage.denominator});
+  async houseAccountChange() {
+    const houseAccountBalance = await SlotMachine.methods.houseAccountGet(this.state.account).call();
+    this.setState({ houseAccountBalance: houseAccountBalance});
   }
 
   render() {
     return (
       <div>
         <InfoComponent balance={this.state.balance}
-                       housePercentage={this.state.housePercentage}
-                       account={this.state.account}/>
+                       houseAccountBalance={this.state.houseAccountBalance}
+                       account={this.state.account}
+                       minInvestment={this.state.minInvestment}/>
 
         <PlayComponent onBalanceChange={this.balanceChange}
                        spinFunction={this.props.spinFunction}
-                       onHousePercentageChange={this.housePercentageChange}
+                       onHouseAccountChange={this.houseAccountChange}
                        account={this.state.account}/>
       </div>
     );
