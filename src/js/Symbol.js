@@ -8,7 +8,7 @@ export default class Symbol {
       this.img = cache[name].cloneNode();
     } else {
       this.img = new Image();
-      this.img.src = require(`../assets/symbols/${name}.svg`);
+      this.img.src = require(`../assets/symbols/${name}`);
       cache[name] = this.img;
     }
   }
@@ -17,8 +17,17 @@ export default class Symbol {
     Symbol.symbols.forEach(symbol => new Symbol(symbol));
   }
 
+  // MODIFY THIS TO IMPORT YOUR SYMBOLS
   static get symbols() {
-    return ['at_at', 'c3po', 'darth_vader', 'death_star', 'falcon', 'r2d2', 'stormtrooper', 'tie_ln', 'yoda'];
+    return ['at_at.svg',
+            'c3po.svg',
+            'darth_vader.svg',
+            'death_star.svg',
+            'falcon.svg',
+            'r2d2.svg',
+            'stormtrooper.svg',
+            'tie_ln.svg',
+            'yoda.svg'];
   }
 
   static random() {

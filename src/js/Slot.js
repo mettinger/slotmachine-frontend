@@ -4,21 +4,22 @@ import Symbol from './Symbol.js';
 export default class Slot {
   constructor(domElement, config = {}) {
     Symbol.preload();
+    var firstSymbol = Symbol.symbols[0];
 
     this.currentSymbols = [
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
     ];
 
     this.nextSymbols = [
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
-      ['death_star', 'death_star', 'death_star'],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
+      [firstSymbol, firstSymbol, firstSymbol],
     ]
 
     this.container = domElement;
@@ -34,7 +35,6 @@ export default class Slot {
   }
 
   spin(outcome) {
-    console.log(Symbol.symbols[0]);
 
     this.currentSymbols = this.nextSymbols;
     this.nextSymbols = [

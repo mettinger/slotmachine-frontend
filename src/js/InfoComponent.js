@@ -21,11 +21,12 @@ class InfoComponent extends Component {
       <div>
       <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css"></link>
         <h2>Info: </h2>
-        <p>Bet Divisor (Ether): {this.state.minDivisor/1e18} </p>
+        <p>Bet/Fund Divisor (Ether): {this.state.minDivisor/1e18} </p>
         <p>House Balance (Ether): {this.props.balance/1e18} </p>
         <p>Max safe bet (Ether): {parseFloat(this.props.balance)/ (parseFloat(this.state.maxMultiplier) * 1e18)} </p>
         <p>Your house balance (Ether): {this.props.houseAccountBalance/1e18}</p>
         <p>Minimum investment for new member (Ether): {this.props.minInvestment}</p>
+        <p>Your open bets: {this.props.openBets.toString()}</p>
         <hr />
       </div>
     );

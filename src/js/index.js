@@ -14,6 +14,9 @@ ReactDOM.render(
     document.getElementById('InfoAndActionComponent')
 );
 
-// my open bet IDs
 // player withdraw rather than auto payment?
-// rounding issues
+// kill contract: send vs transfer
+// security analysis
+// remove public variables
+
+// python analysis of machine
