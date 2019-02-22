@@ -63,6 +63,7 @@ onSubmitBet = async event => {
       from: this.props.account
     });
     const outcome = await SlotMachine.methods.outcomeGet(this.state.playID).call();
+    console.log("Outcome: " + outcome.toString());
     this.setState({ outcome });
 
     this.setState({ message: 'Spinning!' });

@@ -35,7 +35,6 @@ class InfoAndActionComponent extends Component {
 
   awardDetected = (events) => {
     var possibleIndex = this.state.openBets.indexOf(parseInt(events.returnValues.id));
-    console.log(possibleIndex);
     if (possibleIndex > -1) {
       var tempOpenBets = this.state.openBets;
       tempOpenBets.splice(possibleIndex,1);
