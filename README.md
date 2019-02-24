@@ -10,4 +10,5 @@ Please note that this code is adapted from, and heavily dependent on, the origin
 Frontend instructions for creating your custom slot machine:
 
 1.  Put your symbol images, and ONLY your symbol images, in src/assets/symbols.  
-2.  Next.
+2.  After deploying the contract, put SlotMachine.json in src/ethereum.
+3.  Specify your provider in src/ethereum/web3.js
