@@ -14,9 +14,8 @@ ReactDOM.render(
     document.getElementById('InfoAndActionComponent')
 );
 
-// player withdraw rather than auto payment?
-// kill contract: send vs transfer
-// security analysis
-// remove public variables
 
-// python analysis of machine
+// use SafeMath
+// make suspendable instead of killable
+// commit reveal for RNG?
+// remove public variables and functions
