@@ -5,7 +5,7 @@ in my other repository: [slotmachine-ethereum](https://github.com/mettinger/slot
 
 Both repositories are intended to be easily customizable, making it easy to design and deploy new, creative slot machines on Ethereum.
 
-Please note that this code is adapted from, and heavily dependent on, the original code found in [Johannes Kronmüller's repository](https://github.com/johakr/html5-slot-machine).
+Please note that this slot machine animation code is adapted from the original code found in [Johannes Kronmüller's repository](https://github.com/johakr/html5-slot-machine).
 
 Frontend instructions for creating your custom slot machine:
 
