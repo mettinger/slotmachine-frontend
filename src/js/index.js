@@ -10,12 +10,11 @@ const config = {
 const slot = new Slot(document.getElementById('slot'), config);
 
 ReactDOM.render(
-    <InfoAndActionComponent spinFunction={slot.spin}/>,
+  <InfoAndActionComponent spinFunction={slot.spin}/>,
     document.getElementById('InfoAndActionComponent')
 );
 
 
 // use SafeMath
-// make suspendable instead of killable
 // commit reveal for RNG?
-// remove public variables and functions
+// remove public variables

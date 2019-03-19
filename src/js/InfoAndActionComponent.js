@@ -34,6 +34,7 @@ class InfoAndActionComponent extends Component {
   }
 
   awardDetected = (events) => {
+    console.log('award event detected');
     var possibleIndex = this.state.openBets.indexOf(parseInt(events.returnValues.id));
     if (possibleIndex > -1) {
       var tempOpenBets = this.state.openBets;
@@ -43,10 +44,15 @@ class InfoAndActionComponent extends Component {
   }
 
   betEventDetected = (events) => {
+    console.log('bet event detected');
     if (events.returnValues.user === this.state.account) {
       var update = this.state.openBets;
-      update.push(events.returnValues.counter);
-      this.setState({openBets: update});
+
+      // ADDED THIS BECAUSE THIS HANDLER IS FIRING TWICE, DUNNO WHY??
+      if (!update.includes(parseInt(events.returnValues.counter))) {
+        update.push(parseInt(events.returnValues.counter));
+        this.setState({openBets: update});
+      }
     }
   }
 
